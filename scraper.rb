@@ -47,9 +47,9 @@ def scrape_person(url, area)
     name: noko.css('h1').text.tidy,
     image: data_table.css('img/@src').text,
     constituency: constituency,
-    constituency_id: constituency_id,
     region: region,
     area: area,
+    area_id: constituency_id,
     phone: noko.xpath('.//p[contains(.,"Contact phone")]').text.to_s.split(':', 2).last.to_s.tidy,
     party: '',
     email: noko.xpath('.//p[contains(.,"E-mail")]').text.to_s.split(':', 2).last.to_s.split(',').first.to_s.gsub(' ',''),
@@ -58,7 +58,6 @@ def scrape_person(url, area)
     source: url,
   }
   data[:image] = URI.join(url, data[:image]).to_s unless data[:image].to_s.empty?
-  data[:area_id] = data[:area][/(\d+)$/, 1]
   puts data
   ScraperWiki.save_sqlite([:id, :term], data)
 end
