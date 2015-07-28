@@ -20,6 +20,11 @@ def noko_for(url)
   Nokogiri::HTML(open(url).read) 
 end
 
+def birth_date(text)
+  return unless text
+  Date.parse(text).to_s
+end
+
 def scrape_list(url)
   noko = noko_for(url)
   noko.css('a.d_list/@href').map(&:text).each do |mp_url|
@@ -39,6 +44,7 @@ def scrape_person(url)
     area: data_table.xpath('.//b[contains(.,"constituency")]').text.tidy,
     phone: noko.xpath('.//p[contains(.,"Contact phone")]').text.to_s.split(':', 2).last.to_s.tidy,
     email: noko.xpath('.//p[contains(.,"E-mail")]').text.to_s.split(':', 2).last.to_s.split(',').first.to_s.tidy,
+    birth_date: birth_date(noko.xpath('.//p[contains(.,"Born on")]').text.to_s[/Born on (\w+ \d+, \d+)/, 1]),
     term: '2012',
     source: url,
   }
