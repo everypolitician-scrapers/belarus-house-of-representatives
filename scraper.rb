@@ -57,7 +57,7 @@ def scrape_person(url, area)
     term: '5',
     source: url,
   }
-  data[:image] = URI.join(url, data[:image]).to_s unless data[:image].to_s.empty?
+  data[:image] = URI.join('http://house.gov.by/', data[:image]).to_s unless data[:image].to_s.empty?
   puts data
   ScraperWiki.save_sqlite([:id, :term], data)
 end
