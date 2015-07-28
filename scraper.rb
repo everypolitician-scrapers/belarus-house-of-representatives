@@ -46,7 +46,7 @@ def scrape_person(url)
   data[:image] = URI.join(url, data[:image]).to_s unless data[:image].to_s.empty?
   data[:area_id] = data[:area][/(\d+)$/, 1]
   puts data
-  # ScraperWiki.save_sqlite([:id, :term], data)
+  ScraperWiki.save_sqlite([:id, :term], data)
 end
 
 scrape_list('http://house.gov.by/index.php/,7508,,,,1,,,0.html')
