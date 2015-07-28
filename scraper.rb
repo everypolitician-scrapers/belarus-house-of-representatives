@@ -27,21 +27,29 @@ end
 
 def scrape_list(url)
   noko = noko_for(url)
-  noko.css('a.d_list/@href').map(&:text).each do |mp_url|
-    scrape_person mp_url
+  noko.css('a.d_list/@href').each do |mp_url|
+    # the mp page only has the shortened version of this
+    area = mp_url.xpath('../../following-sibling::td[2]').text
+    scrape_person mp_url.text, area
   end
 end
 
-def scrape_person(url)
+def scrape_person(url, area)
   noko = noko_for(url)
 
   data_table = noko.xpath('.//h1/following-sibling::table[1]')
+  area.sub!(/ number /, ' no. ')
+  raise "bad area: #{area}" unless res = area.match(/(.*) No.\s*(\d+)\s*\((.*)\)/i)
+  constituency, constituency_id, region = res.captures
 
   data = { 
     id: url[/7508,(\d+)/, 1],
     name: noko.css('h1').text.tidy,
     image: data_table.css('img/@src').text,
-    area: data_table.xpath('.//b[contains(.,"constituency")]').text.tidy,
+    constituency: constituency,
+    constituency_id: constituency_id,
+    region: region,
+    area: area,
     phone: noko.xpath('.//p[contains(.,"Contact phone")]').text.to_s.split(':', 2).last.to_s.tidy,
     party: '',
     email: noko.xpath('.//p[contains(.,"E-mail")]').text.to_s.split(':', 2).last.to_s.split(',').first.to_s.gsub(' ',''),
