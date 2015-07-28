@@ -28,7 +28,6 @@ def scrape_list(url)
 end
 
 def scrape_person(url)
-  puts url
   noko = noko_for(url)
 
   data_table = noko.xpath('.//h1/following-sibling::table[1]')
