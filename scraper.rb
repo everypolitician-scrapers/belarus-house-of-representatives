@@ -54,7 +54,7 @@ def scrape_person(url, area)
     party: '',
     email: noko.xpath('.//p[contains(.,"E-mail")]').text.to_s.split(':', 2).last.to_s.split(',').first.to_s.gsub(' ',''),
     birth_date: birth_date(noko.xpath('.//p[contains(.,"Born on")]').text.to_s[/Born on (\w+ \d+, \d+)/, 1]),
-    term: '2012',
+    term: '5',
     source: url,
   }
   data[:image] = URI.join(url, data[:image]).to_s unless data[:image].to_s.empty?
