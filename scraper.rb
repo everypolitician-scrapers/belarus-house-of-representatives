@@ -38,7 +38,7 @@ def scrape_person(url)
     image: data_table.css('img/@src').text,
     area: data_table.xpath('.//b[contains(.,"constituency")]').text.tidy,
     phone: noko.xpath('.//p[contains(.,"Contact phone")]').text.to_s.split(':', 2).last.to_s.tidy,
-    email: noko.xpath('.//p[contains(.,"E-mail")]').text.to_s.split(':', 2).last.to_s.tidy,
+    email: noko.xpath('.//p[contains(.,"E-mail")]').text.to_s.split(':', 2).last.to_s.split(',').first.to_s.tidy,
     term: '2012',
     source: url,
   }
